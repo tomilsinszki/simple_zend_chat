@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Chat\Entity\Message;
 use Doctrine\ORM\EntityManager;
+use Chat\Form\ChatForm;
 
 class ChatController extends AbstractActionController
 {
@@ -21,9 +22,12 @@ class ChatController extends AbstractActionController
 
     public function indexAction()
     {
-        $messages = $this->entityManager->getRepository(Message::class)->findAll();
+        $form = new ChatForm();
+
+        $messages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'DESC']);
 
         return new ViewModel([
+            'form' => $form,
             'messages' => $messages,
         ]);
     }

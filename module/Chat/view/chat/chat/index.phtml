@@ -1,5 +1,13 @@
-sample page for index
+<?php
+    echo $this->form()->openTag($form);
+    echo $this->formRow($form->get('content'));
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag();
+?>
 
 <?php foreach($messages as $message): ?>
-    <div><?php echo($message->getContent()); ?></div>
+    <div>
+        <?php echo $message->getCreatedAt()->format('Y-m-d H:i:s'); ?>
+        <?php echo $message->getContent(); ?>
+    </div>
 <?php endforeach; ?>
