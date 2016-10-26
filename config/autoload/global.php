@@ -11,6 +11,17 @@
  * file.
  */
 
+use Doctrine\DBAL\Driver\PDOSqlite;
+
 return [
-    // ...
+    'doctrine' => [
+        'connection' => [
+            'orm_default' => [
+                'driverClass' => PDOSqlite::class,
+                'params' => [
+                    'url' => 'sqlite:///data/chat.db',
+                ]
+            ],
+        ],
+    ],
 ];

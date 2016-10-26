@@ -1,1 +1,5 @@
 sample page for index
+
+<?php foreach($messages as $message): ?>
+    <div><?php echo($message->getContent()); ?></div>
+<?php endforeach; ?>
