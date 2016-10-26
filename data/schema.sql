@@ -1,0 +1,2 @@
+CREATE TABLE message (id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP);
+INSERT INTO message (content, created_at) VALUES ('Test message', '2016-01-01 01:01:01');
