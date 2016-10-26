@@ -11,3 +11,28 @@
         <?php echo $message->getContent(); ?>
     </div>
 <?php endforeach; ?>
+
+<script>
+    $(function() {
+        $('#chat-form').submit(
+            function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                var request = $.ajax({
+                    method: "POST",
+                    url: "/chat/add",
+                    data: { content: "" },
+                    dataType: "json"
+                });
+
+                request.done(
+                    function(response) {
+                        console.log(response);
+                        console.log(response.one);
+                    }
+                );
+            }
+        );
+    });
+</script>

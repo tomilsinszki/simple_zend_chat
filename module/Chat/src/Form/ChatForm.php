@@ -26,6 +26,7 @@ class ChatForm extends Form
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => [
+                'id' => 'message-send-button',
                 'value' => 'Send',
             ],
         ]);
