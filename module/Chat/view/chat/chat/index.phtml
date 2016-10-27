@@ -18,7 +18,7 @@
 
                 var request = $.ajax({
                     method: "POST",
-                    url: "/chat/add",
+                    url: "<?php echo $this->url('chat', ['action' => 'add']); ?>",
                     data: { content: $('#message-content-input').val() },
                     dataType: "html"
                 });
