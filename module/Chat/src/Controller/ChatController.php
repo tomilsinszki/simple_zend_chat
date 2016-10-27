@@ -33,7 +33,7 @@ class ChatController extends AbstractActionController
     public function indexAction()
     {
         $form = new ChatForm();
-        $messages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'DESC']);
+        $messages = $this->entityManager->getRepository(Message::class)->getFromLatestToOldest();
 
         return new ViewModel([
             'form' => $form,
@@ -61,13 +61,8 @@ class ChatController extends AbstractActionController
             $this->entityManager->flush();
         }
 
-        $removableMessages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'DESC'], null, 10);
-        foreach($removableMessages as $message) {
-            $this->entityManager->remove($message);
-        }
-        $this->entityManager->flush();
-
-        $messages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'DESC']);
+        $this->entityManager->getRepository(Message::class)->removeAllExceptNewests(10);
+        $messages = $this->entityManager->getRepository(Message::class)->getFromLatestToOldest();
 
         $viewModel = new ViewModel([
             'messagesData' => $this->getMessageFormattedData($messages),

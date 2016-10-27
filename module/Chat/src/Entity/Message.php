@@ -5,7 +5,7 @@ namespace Chat\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Chat\Repository\MessageRepository")
  * @ORM\Table(name="message")
  */
 class Message
