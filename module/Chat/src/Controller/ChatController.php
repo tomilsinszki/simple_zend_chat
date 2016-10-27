@@ -43,10 +43,14 @@ class ChatController extends AbstractActionController
 
     /**
      * @return ViewModel
+     *
+     * @throws \Exception
      */
     public function addAction()
     {
-        // TODO: only allow post
+        if (!$this->getRequest()->isPost()) {
+            throw new \Exception('Only POST method allowed for this action.');
+        }
 
         $content = $this->params()->fromPost('content', null);
 
