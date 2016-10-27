@@ -33,11 +33,12 @@
                     dataType: "html"
                 });
 
+                $('#message-content-input').val('');
+
                 request.done(
                     function(response) {
                         $('#messages-table tr').remove();
                         $('#messages-table').append(response);
-                        $('#message-content-input').val('');
                     }
                 );
             }
