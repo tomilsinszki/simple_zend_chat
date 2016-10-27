@@ -41,8 +41,13 @@ class ChatController extends AbstractActionController
         ]);
     }
 
+    /**
+     * @return ViewModel
+     */
     public function addAction()
     {
+        // TODO: only allow post
+
         $content = $this->params()->fromPost('content', null);
 
         if (!empty($content)) {
