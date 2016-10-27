@@ -18,6 +18,7 @@ class ChatForm extends Form
             'name' => 'content',
             'type' => 'text',
             'attributes' => [
+                'id' => 'message-content-input',
                 'placeholder' => "Let's type something here!",
             ],
         ]);

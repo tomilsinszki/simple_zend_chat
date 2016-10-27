@@ -5,12 +5,9 @@
     echo $this->form()->closeTag();
 ?>
 
-<?php foreach($messages as $message): ?>
-    <div>
-        <?php echo $message->getCreatedAt()->format('Y-m-d H:i:s'); ?>
-        <?php echo $message->getContent(); ?>
-    </div>
-<?php endforeach; ?>
+<table id="messages-table" style="width:100%">
+    <?php echo $this->partial('chat/chat/_messages_table_content', ['messagesData' => $messagesData]); ?>
+</table>
 
 <script>
     $(function() {
@@ -22,14 +19,14 @@
                 var request = $.ajax({
                     method: "POST",
                     url: "/chat/add",
-                    data: { content: "" },
-                    dataType: "json"
+                    data: { content: $('#message-content-input').val() },
+                    dataType: "html"
                 });
 
                 request.done(
                     function(response) {
-                        console.log(response);
-                        console.log(response.one);
+                        $('#messages-table').html(response);
+                        $('#message-content-input').val('');
                     }
                 );
             }

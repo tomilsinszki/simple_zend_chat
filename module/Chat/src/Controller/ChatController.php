@@ -33,21 +33,66 @@ class ChatController extends AbstractActionController
     {
         $form = new ChatForm();
         $messages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'DESC']);
+        $messagesData = $this->getMessagesData($messages);
 
         return new ViewModel([
             'form' => $form,
-            'messages' => $messages,
+            'messagesData' => $messagesData,
         ]);
     }
 
     public function addAction()
     {
+        $content = $this->params()->fromPost('content', null);
 
-        $result = ['one' => 'one', 'two' => 'two'];
+        if (!empty($content)) {
+            $message = new Message();
+            $message->setContent($content);
+            $this->entityManager->persist($message);
+            $this->entityManager->flush();
+        }
+
+        $removableMessages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'DESC'], null, 10);
+        foreach($removableMessages as $message) {
+            $this->entityManager->remove($message);
+        }
+        $this->entityManager->flush();
+
+        $messages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'DESC']);
+        $messagesData = $this->getMessagesData($messages);
 
         $headers = $this->getResponse()->getHeaders();
-        $headers->addHeaderLine("Content-type: application/json");
+        $headers->addHeaderLine("Content-type: application/html");
 
-        return $this->getResponse()->setContent(Json::encode($result));
+        $viewModel = new ViewModel([
+            'messagesData' => $messagesData,
+        ]);
+
+        $viewModel->setTerminal(true);
+
+        return $viewModel;
+    }
+
+    /**
+     * @param Message[] $messages
+     *
+     * @return array
+     */
+    private function getMessagesData($messages) {
+        $data = [];
+
+        foreach($messages as $message) {
+            // TODO: throw exception
+            if (!($message instanceof Message)) {
+                return [];
+            }
+
+            $data[] = [
+                'content' => $message->getContent(),
+                'createdAt' => ($message->getCreatedAt() instanceof \DateTime) ? $message->getCreatedAt()->format('Y-m-d H:i:s') : '-',
+            ];
+        }
+
+        return $data;
     }
 }

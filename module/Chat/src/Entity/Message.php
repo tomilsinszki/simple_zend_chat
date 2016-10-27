@@ -27,6 +27,11 @@ class Message
      */
     protected $createdAt;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
     /**
      * @return integer
      */
