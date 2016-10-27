@@ -77,19 +77,20 @@ class ChatController extends AbstractActionController
      * @param Message[] $messages
      *
      * @return array
+     *
+     * @throws \Exception
      */
     private function getMessagesData($messages) {
         $data = [];
 
         foreach($messages as $message) {
-            // TODO: throw exception
             if (!($message instanceof Message)) {
-                return [];
+                throw new \Exception('Invalid message.');
             }
 
             $data[] = [
                 'content' => $message->getContent(),
-                'createdAt' => ($message->getCreatedAt() instanceof \DateTime) ? $message->getCreatedAt()->format('Y-m-d H:i:s') : '-',
+                'createdAt' => ($message->getCreatedAt() instanceof \DateTime) ? $message->getCreatedAt()->format('Y-m-d H:i:s') : '',
             ];
         }
 
