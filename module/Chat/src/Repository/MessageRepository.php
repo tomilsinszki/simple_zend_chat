@@ -16,6 +16,7 @@ class MessageRepository extends EntityRepository
             ->select('m')
             ->from(Message::class, 'm')
             ->orderBy('m.createdAt', 'DESC')
+            ->setMaxResults(10)
             ->getQuery()
             ->getResult();
     }

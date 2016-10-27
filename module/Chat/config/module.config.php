@@ -5,6 +5,7 @@ namespace Chat;
 use Chat\Controller\Factory\ChatControllerFactory;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Zend\Router\Http\Segment;
+use Zend\Router\Http\Literal;
 
 return [
     'controllers' => [
@@ -28,6 +29,16 @@ return [
     ],
     'router' => [
         'routes' => [
+            'home' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/',
+                    'defaults' => [
+                        'controller' => Controller\ChatController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
             'chat' => [
                 'type'    => Segment::class,
                 'options' => [

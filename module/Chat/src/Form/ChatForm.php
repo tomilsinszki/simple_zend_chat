@@ -20,6 +20,7 @@ class ChatForm extends Form
             'attributes' => [
                 'id' => 'message-content-input',
                 'placeholder' => "Let's type something here!",
+                'autocomplete' => 'off',
             ],
         ]);
 
