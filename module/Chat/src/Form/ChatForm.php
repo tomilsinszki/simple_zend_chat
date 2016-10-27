@@ -21,6 +21,7 @@ class ChatForm extends Form
                 'id' => 'message-content-input',
                 'placeholder' => "Let's type something here!",
                 'autocomplete' => 'off',
+                'class' => 'form-control',
             ],
         ]);
 
@@ -30,6 +31,7 @@ class ChatForm extends Form
             'attributes' => [
                 'id' => 'message-send-button',
                 'value' => 'Send',
+                'class' => 'btn btn-secondary'
             ],
         ]);
     }
