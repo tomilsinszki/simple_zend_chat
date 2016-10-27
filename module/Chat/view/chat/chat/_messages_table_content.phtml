@@ -1,6 +1,6 @@
 <?php foreach($messagesData as $data): ?>
 <tr>
-    <td style="width: 25%;"><?php echo $data['createdAt']; ?></td>
-    <td><?php echo $data['content']; ?></td>
+    <td style="width: 25%;"><?php echo $data->getCreatedAtString(); ?></td>
+    <td><?php echo $data->getContent(); ?></td>
 </tr>
 <?php endforeach; ?>

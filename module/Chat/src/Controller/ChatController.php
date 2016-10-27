@@ -2,12 +2,13 @@
 
 namespace Chat\Controller;
 
-use Zend\Json\Json;
+use Chat\Data\MessageFormattedDataInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Chat\Entity\Message;
 use Doctrine\ORM\EntityManager;
 use Chat\Form\ChatForm;
+use Chat\Data\MessageFormattedData;
 
 class ChatController extends AbstractActionController
 {
@@ -33,11 +34,10 @@ class ChatController extends AbstractActionController
     {
         $form = new ChatForm();
         $messages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'DESC']);
-        $messagesData = $this->getMessagesData($messages);
 
         return new ViewModel([
             'form' => $form,
-            'messagesData' => $messagesData,
+            'messagesData' => $this->getMessageFormattedData($messages),
         ]);
     }
 
@@ -59,13 +59,9 @@ class ChatController extends AbstractActionController
         $this->entityManager->flush();
 
         $messages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'DESC']);
-        $messagesData = $this->getMessagesData($messages);
-
-        $headers = $this->getResponse()->getHeaders();
-        $headers->addHeaderLine("Content-type: application/html");
 
         $viewModel = new ViewModel([
-            'messagesData' => $messagesData,
+            'messagesData' => $this->getMessageFormattedData($messages),
         ]);
 
         $viewModel->setTerminal(true);
@@ -74,26 +70,23 @@ class ChatController extends AbstractActionController
     }
 
     /**
-     * @param Message[] $messages
+     * @param $messages
      *
-     * @return array
+     * @return MessageFormattedDataInterface[]
      *
      * @throws \Exception
      */
-    private function getMessagesData($messages) {
-        $data = [];
+    private function getMessageFormattedData($messages) {
+        $formattedData = [];
 
         foreach($messages as $message) {
             if (!($message instanceof Message)) {
                 throw new \Exception('Invalid message.');
             }
 
-            $data[] = [
-                'content' => $message->getContent(),
-                'createdAt' => ($message->getCreatedAt() instanceof \DateTime) ? $message->getCreatedAt()->format('Y-m-d H:i:s') : '',
-            ];
+            $formattedData[] = new MessageFormattedData($message);
         }
 
-        return $data;
+        return $formattedData;
     }
 }
