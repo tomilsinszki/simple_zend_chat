@@ -16,6 +16,11 @@ class MessageFormattedData implements MessageFormattedDataInterface
      */
     private $createdAtString;
 
+    /**
+     * MessageFormattedData constructor.
+     *
+     * @param Message $message
+     */
     public function __construct(Message $message)
     {
         $this->content = $message->getContent();
